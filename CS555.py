@@ -22,7 +22,7 @@ def init_db(db_file, sql_filename):
     conn = None
     try:
         conn = sqlite3.connect(db_file)
-        print(sqlite3.version)
+        
     except Error as e:
         print(e)
    
@@ -90,11 +90,12 @@ def parse_data(conn):
             #add new individual
 
             current_id = argue.strip("@")
-            print("current " + argue)
+           
+
             record_type = "INDI"
 
             query = '''
-                        INSERT INTO individuals(ID) VALUES(?)
+                        INSERT INTO individuals(ID, ALIVE) VALUES(?, 'T')
                     '''
             cur = conn.cursor()
             cur.execute(query, (current_id,))
@@ -125,7 +126,7 @@ def parse_data(conn):
                 age = relativedelta(date_time_obj, datetime.datetime.now())
                 
                 cur.execute(query,(data_string,current_id))
-                print(age.year)
+               
 
             elif tag[0] == "DEAT":
                 data = next(gedcomfile).split()[2:]
