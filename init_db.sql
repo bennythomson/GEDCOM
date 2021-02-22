@@ -19,5 +19,4 @@ CREATE TABLE IF NOT EXISTS families (
 	wife_id text ,
 	children text 
 	
-
 );
