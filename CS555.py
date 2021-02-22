@@ -93,7 +93,7 @@ def parse_data(conn):
         args_string = ""
         for arg in argue:
             args_string += arg + " "
-        args_string.strip("@")
+        args_string = args_string.strip("@")
 
 
 
