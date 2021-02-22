@@ -157,10 +157,12 @@ def parse_data(conn):
 
             elif tag[0] == "FAMS":
                 query = "UPDATE individuals SET SPOUSE = ? WHERE ID = ?"
+                args_string = args_string.strip("@")
                 cur.execute(query,(args_string.strip("@"),current_id))
 
             elif tag[0] == "FAMC":
                 query = "UPDATE individuals SET CHIL = ? WHERE ID = ?"
+                args_string = args_string.strip("@")
                 cur.execute(query,(args_string.strip("@"),current_id))
 
             else: 
