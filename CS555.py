@@ -12,14 +12,18 @@ filename = input()
 
 gedcomfile = open(filename,"r")
 
+#Open the file specified by the user
+
 supported_tags = [ "NAME", "SEX", "BIRT", "DEAT", "FAMC", "FAMS", "MARR", "HUSB", "WIFE",
                   "CHIL", "DIV", "DATE", "HEAD", "TRLR", "NOTE"]
 caution = ["INDI", "FAM"]
 
 
 def init_db(db_file, sql_filename):
+
     #Creates and connects to the local SQLite Database
     conn = None
+
     try:
         conn = sqlite3.connect(db_file)
         
@@ -30,6 +34,7 @@ def init_db(db_file, sql_filename):
 
     cursor = conn.cursor()
 
+    #Clears the database's tables
 
     sql = 'DELETE FROM individuals'
     cursor.execute(sql)
@@ -37,6 +42,7 @@ def init_db(db_file, sql_filename):
     sql = 'DELETE FROM families'
     cursor.execute(sql)
 
+    #Setup the tables using the local SQL file
     sql_file = open(sql_filename)
     sql_as_string = sql_file.read()
     cursor.executescript(sql_as_string)
@@ -45,11 +51,13 @@ def init_db(db_file, sql_filename):
 
 def parse_data(conn):
 
+
     current_line = 0
 
     current_id = None
     record_type = None
 
+    #Goes line by line in the file and updates the Database
     for line in iter(gedcomfile):
 
 
@@ -67,7 +75,7 @@ def parse_data(conn):
         argue = arguments.split()
 
 
-
+        #Order the line's arguments so that theyre in a uniform location
         for word in argue:
             if word in caution:
                 valid = "Y"
@@ -81,19 +89,23 @@ def parse_data(conn):
                     else:
                         valid = "N"
 
+        #Format the line's arguments
         args_string = ""
         for arg in argue:
             args_string += arg + " "
         args_string.strip("@")
 
+
+
+        #Check is the current line is level 0 and specifies a new individual
         if int(level)==0 and tag=="INDI":
-            #add new individual
-
+          
+            #Current_id allows the lines following the creation of this individual to refer to the same person
+            #Current_id is only updated when a new individual or family is created
             current_id = argue.strip("@")
-           
-
             record_type = "INDI"
 
+            #Creates a  new individual in the DB
             query = '''
                         INSERT INTO individuals(ID, ALIVE) VALUES(?, 'T')
                     '''
@@ -102,17 +114,24 @@ def parse_data(conn):
             conn.commit()
 
 
+        #Now, we're looking to see if we can update a particular individual
+
+        #Ensure that the level is greater than 0 (implying these lines belong to the previously defined indiviudal)
         if int(level) > 0 and record_type=="INDI":
             #update the indivual table
             cur = conn.cursor()
-            if tag[0] == "NAME":
 
+            #Now we check for each tag, and then update the row with the current line's arguments
+
+            if tag[0] == "NAME":
                 query = "UPDATE individuals SET NAME = ? WHERE ID = ?"
                 cur.execute(query,(args_string,current_id))
             elif tag[0] == "SEX":
                 query = "UPDATE individuals SET SEX = ? WHERE ID = ?"
                 cur.execute(query,(args_string,current_id))
+            
             elif tag[0] == "BIRT":
+                #This wonderful file format stores the date information on the next line, so we have to peek ahead to get the date of the indivual's birth or death
                 data = next(gedcomfile).split()[2:]
                 
                 data_string = ""
@@ -120,10 +139,6 @@ def parse_data(conn):
                     data_string += i + " "
                
                 query = "UPDATE individuals SET BIRT = ? WHERE ID = ?"
-
-                date_time_obj = datetime.datetime.strptime(data_string, '%d %b %Y ')
-
-                age = relativedelta(date_time_obj, datetime.datetime.now())
                 
                 cur.execute(query,(data_string,current_id))
                
@@ -152,12 +167,10 @@ def parse_data(conn):
                 pass
            
 
-        ## ADD NEW FAMILY
+        ## ADD NEW FAMILY, this works the same way as adding/updating an individual
         if int(level)==0 and tag=="FAM":
-            #add new individual
 
             current_id = argue.strip("@")
-            #print("current " + argue)
             record_type = "FAM"
 
             query = '''INSERT INTO families(ID) VALUES(?)'''
@@ -184,10 +197,6 @@ def parse_data(conn):
                 cur.execute(query,(args_string,current_id))
             
         
-  
-
-    
-    #sys.stdout.close()
 
 
 
