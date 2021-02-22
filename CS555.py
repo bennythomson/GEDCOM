@@ -3,26 +3,19 @@ import sqlite3
 from sqlite3 import Error
 import datetime
 from dateutil.relativedelta import relativedelta
-
-
-print("\nSSW 555: Project 02")
-print("\nRun by MariaCristina Todaro\n")
+from prettytable import from_db_cursor
 
 
 print('Please specify GEDCOM file: ')
-#filename = input()
 
-gedcomfile = open("simpson_family.ged","r")
+filename = input()
 
-#gedcomfile = open('testged.ged', 'r')
-#sys.stdout = open("Project02Results.txt", "w")
-
+gedcomfile = open(filename,"r")
 
 supported_tags = [ "NAME", "SEX", "BIRT", "DEAT", "FAMC", "FAMS", "MARR", "HUSB", "WIFE",
                   "CHIL", "DIV", "DATE", "HEAD", "TRLR", "NOTE"]
 caution = ["INDI", "FAM"]
 
-print("bruh")
 
 def init_db(db_file, sql_filename):
     #Creates and connects to the local SQLite Database
@@ -87,8 +80,6 @@ def parse_data(conn):
                         valid = "Y"
                     else:
                         valid = "N"
-
-        print("<--", level, "|", tag, "|", valid, "|", argue,"\n")
 
         args_string = ""
         for arg in argue:
@@ -201,3 +192,15 @@ def parse_data(conn):
 
 conn = init_db("./family.db","./init_db.sql")
 parse_data(conn)
+
+connection = sqlite3.connect("./family.db")
+cursor = connection.cursor()
+cursor.execute("SELECT * FROM individuals")
+mytable = from_db_cursor(cursor)
+
+print(mytable)
+
+cursor.execute("SELECT * FROM families")
+mytable = from_db_cursor(cursor)
+
+print(mytable)
