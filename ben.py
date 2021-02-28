@@ -7,7 +7,7 @@ def marriage_before_death(conn):
     rows = cur.fetchall()
 
     for row in rows:
-        pass
+        print(row)
 
 def ben_user_stories(conn):
  marriage_before_death(conn)
