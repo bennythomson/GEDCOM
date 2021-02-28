@@ -1,2 +1,2 @@
-def paul_user_stories():
+def paul_user_stories(conn):
     pass

@@ -1,2 +1,2 @@
-def mc_user_stories():
+def mc_user_stories(conn):
     print("hi")

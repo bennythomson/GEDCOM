@@ -143,10 +143,11 @@ def parse_data(conn):
                 data_string = ""
                 for i in data:
                     data_string += i + " "
+                birth_date = datetime.datetime.strptime(data_string, '%d %b %Y ').date()
 
                 query = "UPDATE individuals SET BIRT = ? WHERE ID = ?"
 
-                cur.execute(query,(data_string,current_id))
+                cur.execute(query,(birth_date,current_id))
 
 
             elif tag[0] == "DEAT":
@@ -156,20 +157,23 @@ def parse_data(conn):
                 for i in data:
                     data_string += i + " "
 
+                death_date = datetime.datetime.strptime(data_string, '%d %b %Y ').date()
+
                 query = "UPDATE individuals SET ALIVE='F', DEAT = ? WHERE ID = ?"
 
 
-                cur.execute(query,(data_string,current_id))
+                cur.execute(query,(death_date,current_id))
 
             elif tag[0] == "FAMS":
                 query = "UPDATE individuals SET SPOUSE = ? WHERE ID = ?"
-                args_string = args_string.strip("@")
-                cur.execute(query,(args_string.strip("@"),current_id))
+                args_string = args_string.replace('@','')
+                print(args_string)
+                cur.execute(query,(args_string,current_id))
 
             elif tag[0] == "FAMC":
                 query = "UPDATE individuals SET CHIL = ? WHERE ID = ?"
-                args_string = args_string.strip("@")
-                cur.execute(query,(args_string.strip("@"),current_id))
+                args_string = args_string.replace('@','')
+                cur.execute(query,(args_string,current_id))
 
             else:
                 pass
@@ -210,9 +214,11 @@ def parse_data(conn):
                 data_string = ""
                 for i in data:
                     data_string += i + " "
-                print(args_string)
+
+                marriage_date = datetime.datetime.strptime(data_string, '%d %b %Y ').date()
+
                 query = "UPDATE families SET marriage_date = ? WHERE ID = ?"
-                cur.execute(query,(data_string,current_id))
+                cur.execute(query,(marriage_date,current_id))
 
             elif tag[0] == "DIV":
                 data = next(gedcomfile).split()[2:]
@@ -221,18 +227,19 @@ def parse_data(conn):
                 for i in data:
                     data_string += i + " "
 
+                divorce_date = datetime.datetime.strptime(data_string, '%d %b %Y ').date()
                 query = "UPDATE families SET divorce_date = ? WHERE ID = ?"
-                cur.execute(query,(data_string,current_id))
+                cur.execute(query,(divorce_date,current_id))
 
 
 
 
-def validate_output():
-    ben.ben_user_stories()
-    mc.mc_user_stories()
-    paul.paul_user_stories()
+def validate_output(conn):
+    ben.ben_user_stories(conn)
+    mc.mc_user_stories(conn)
+    paul.paul_user_stories(conn)
     #runs tests to validate the output
-    #place all sprint functions here
+
 
 
 
@@ -252,4 +259,4 @@ mytable = from_db_cursor(cursor)
 
 print(mytable)
 
-validate_output()
+validate_output(conn)
