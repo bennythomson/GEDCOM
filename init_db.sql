@@ -7,16 +7,17 @@ CREATE TABLE IF NOT EXISTS individuals (
 	ALIVE boolean ,
 	DEAT date ,
 	CHIL varchar ,
-	SPOUSE varchar 
+	SPOUSE varchar
 
 );
 
 
 CREATE TABLE IF NOT EXISTS families (
 	id varchar PRIMARY KEY,
-	divorced boolean ,
+	marriage_date date,
+	divorce_date date,
 	husband_id text ,
 	wife_id text ,
-	children text 
-	
+	children text
+
 );

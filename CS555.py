@@ -5,6 +5,10 @@ import datetime
 from dateutil.relativedelta import relativedelta
 from prettytable import from_db_cursor
 
+import ben
+import mc
+import paul
+
 
 print('Please specify GEDCOM file: ')
 
@@ -26,13 +30,19 @@ def init_db(db_file, sql_filename):
 
     try:
         conn = sqlite3.connect(db_file)
-        
+
     except Error as e:
         print(e)
-   
+
 
 
     cursor = conn.cursor()
+
+
+    #Setup the tables using the local SQL file
+    sql_file = open(sql_filename)
+    sql_as_string = sql_file.read()
+    cursor.executescript(sql_as_string)
 
     #Clears the database's tables
 
@@ -42,11 +52,7 @@ def init_db(db_file, sql_filename):
     sql = 'DELETE FROM families'
     cursor.execute(sql)
 
-    #Setup the tables using the local SQL file
-    sql_file = open(sql_filename)
-    sql_as_string = sql_file.read()
-    cursor.executescript(sql_as_string)
-    
+
     return conn
 
 def parse_data(conn):
@@ -65,7 +71,7 @@ def parse_data(conn):
         level = line[:1]
 
 
-       
+
         splitting = line.split()
         # print(splitting)
         indices = [1]
@@ -99,7 +105,7 @@ def parse_data(conn):
 
         #Check is the current line is level 0 and specifies a new individual
         if int(level)==0 and tag=="INDI":
-          
+
             #Current_id allows the lines following the creation of this individual to refer to the same person
             #Current_id is only updated when a new individual or family is created
             current_id = argue.strip("@")
@@ -129,30 +135,30 @@ def parse_data(conn):
             elif tag[0] == "SEX":
                 query = "UPDATE individuals SET SEX = ? WHERE ID = ?"
                 cur.execute(query,(args_string,current_id))
-            
+
             elif tag[0] == "BIRT":
                 #This wonderful file format stores the date information on the next line, so we have to peek ahead to get the date of the indivual's birth or death
                 data = next(gedcomfile).split()[2:]
-                
+
                 data_string = ""
                 for i in data:
                     data_string += i + " "
-               
+
                 query = "UPDATE individuals SET BIRT = ? WHERE ID = ?"
-                
+
                 cur.execute(query,(data_string,current_id))
-               
+
 
             elif tag[0] == "DEAT":
                 data = next(gedcomfile).split()[2:]
-                
+
                 data_string = ""
                 for i in data:
                     data_string += i + " "
-               
+
                 query = "UPDATE individuals SET ALIVE='F', DEAT = ? WHERE ID = ?"
 
-                
+
                 cur.execute(query,(data_string,current_id))
 
             elif tag[0] == "FAMS":
@@ -165,9 +171,9 @@ def parse_data(conn):
                 args_string = args_string.strip("@")
                 cur.execute(query,(args_string.strip("@"),current_id))
 
-            else: 
+            else:
                 pass
-           
+
 
         ## ADD NEW FAMILY, this works the same way as adding/updating an individual
         if int(level)==0 and tag=="FAM":
@@ -179,7 +185,7 @@ def parse_data(conn):
             cur = conn.cursor()
             cur.execute(query, (current_id,))
             conn.commit()
-        
+
 
         if int(level) > 0 and record_type=="FAM":
             #Update each family row by row
@@ -197,8 +203,37 @@ def parse_data(conn):
             elif tag[0] == "CHIL":
                 query = "UPDATE families SET children = ? WHERE ID = ?"
                 cur.execute(query,(args_string,current_id))
-            
-        
+
+            elif tag[0] == "MARR":
+                data = next(gedcomfile).split()[2:]
+
+                data_string = ""
+                for i in data:
+                    data_string += i + " "
+                print(args_string)
+                query = "UPDATE families SET marriage_date = ? WHERE ID = ?"
+                cur.execute(query,(data_string,current_id))
+
+            elif tag[0] == "DIV":
+                data = next(gedcomfile).split()[2:]
+
+                data_string = ""
+                for i in data:
+                    data_string += i + " "
+
+                query = "UPDATE families SET divorce_date = ? WHERE ID = ?"
+                cur.execute(query,(data_string,current_id))
+
+
+
+
+def validate_output():
+    ben.ben_user_stories()
+    mc.mc_user_stories()
+    paul.paul_user_stories()
+    #runs tests to validate the output
+    #place all sprint functions here
+
 
 
 
@@ -216,3 +251,5 @@ cursor.execute("SELECT * FROM families")
 mytable = from_db_cursor(cursor)
 
 print(mytable)
+
+validate_output()
