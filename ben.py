@@ -9,9 +9,11 @@ def marriage_before_death(conn):
 
     rows = cur.fetchall()
 
+    print(rows)
     for row in rows:
 
         marriage_date = row[1]
+        print(marriage_date)
         marriage_date = datetime.datetime.strptime(marriage_date, '%Y-%m-%d').date()
 
         #print(row[3:])

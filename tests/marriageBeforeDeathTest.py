@@ -1,10 +1,16 @@
 import unittest
+import sqlite3
+import sys
+sys.path.append('../')
+import ben
 
 class TestUserStory05(unittest.TestCase):
 
     def testCorrectFamily(self):
+        connection = sqlite3.connect("../family.db")
 
-        self.assertEqual("Error family 1 married after death", )
+        lst = ben.marriage_before_death(connection)
+        self.assertEqual(['I5'], lst)
 
 
 if __name__ == '__main__':
