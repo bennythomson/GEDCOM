@@ -1,13 +1,16 @@
 import datetime
 
-def divorce_before_death(conn):
+def divorce_after_death(conn):
 
+    # create a list where individuals who were divorced post death go
     divorced_after_death = []
 
-    cur = conn.cursor()
-    cur.execute("SELECT * FROM families")
+    # create a connection to the data base and specific info
+    connection = conn.cursor()
+    connection.execute("SELECT * FROM families")
 
-    rows = cur.fetchall()
+    # fetch rows from the connection
+    rows = connection.fetchall()
 
     for row in rows:
 
@@ -15,25 +18,23 @@ def divorce_before_death(conn):
         if(divorce_date != None):
             divorce_date = datetime.datetime.strptime(divorce_date, '%Y-%m-%d').date()
 
-        #print(row[3:])
-
         for indiv in row[3:]:
 
             indiv= indiv.strip()
-            new_cur = conn.cursor()
+            anotha_one = conn.cursor()
 
-            new_cur.execute("SELECT * FROM individuals WHERE ID = ?",(str(indiv),))
-            indiv_result = new_cur.fetchall()
+            anotha_one.execute("SELECT * FROM individuals WHERE ID = ?",(str(indiv),))
+            indiv_result = anotha_one.fetchall()
 
 
             if(indiv_result[0][5] != None):
-                individuals_death = datetime.datetime.strptime(indiv_result[0][5], '%Y-%m-%d').date()
+                individual_death = datetime.datetime.strptime(indiv_result[0][5], '%Y-%m-%d').date()
 
                 if(divorce_date != None):
-                    if(individuals_death < divorce_date):
+                    if(individual_death < divorce_date):
 
                         divorced_after_death.append(indiv)
-                        print("Error: " + indiv_result[0][0] + " divorced after death")
+                        print("Error: Shows " + indiv_result[0][0] + " was divorced after death")
 
     return divorced_after_death
 
@@ -42,4 +43,4 @@ def divorce_before_death(conn):
 
 
 def mc_user_stories(conn):
-    divorce_before_death(conn)
+    divorce_after_death(conn)
