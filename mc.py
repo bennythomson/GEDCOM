@@ -19,6 +19,7 @@ def divorce_after_death(individual=None, family=None):
             print("US06 Error: ", individual[0], " got divorced after death, review Simpson Family")
             return individual[0]
 
+
     return None
 
 
