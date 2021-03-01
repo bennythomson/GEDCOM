@@ -1,33 +1,54 @@
 import unittest
-import sqlite3
 import sys
-
 sys.path.append('../')
 import mc
 
 
 class TestUS06(unittest.TestCase):
-    # this will test to make sure if person I know is divorced post death is true
-    def test_TrueValue(self):
-        connection2 = sqlite3.connect("./family.db")
-        lst2 = mc.divorce_after_death(connection2)
-        self.assertTrue(['I5'], lst2)
+    def testCorrectCase1(self):
+        # we will check the person we know is divorced post death as a test case
+        # Individual: ID Name Sex Birth Alive Death Child Family in list
+        individual = ['I5', 'Mona /Olsen/', 'F', '1929-03-15', 'F', '2007-07-06', 'None', 'F2']
+        # Family: ID Marriage Date Divorce Date Husband Wife Child
+        family = ['F2', '2010-09-08', '2011-05-06', 'I3', 'I5', 'I1']
+        # test to see if correct case runs from user story
+        self.assertEqual(mc.divorce_after_death(individual,family), 'I5')
 
-    def test_NotNone(self):
-        connection = sqlite3.connect("./family.db")
-        lst = mc.divorce_after_death(connection)
-        self.assertIsNotNone(['I5'], lst)
+    def testIncorrectCase2(self):
+        # we will check if an error occurs when the death death is greater than divorce date
+        # Individual: ID Name Sex Birth Alive Death Child Family in list
+        individual = ['I5', 'Mona /Olsen/', 'F', '1929-03-15', 'F', '2015-07-06', 'None', 'F2']
+        # Family: ID Marriage Date Divorce Date Husband Wife Child
+        family = ['F2', '2010-09-08', '2011-05-06', 'I3', 'I5', 'I1']
+        # test to see if correct case runs from user story
+        self.assertNotEqual(mc.divorce_after_death(individual, family), 'I5')
 
-    def test_WrongValue(self):
-        connection = sqlite3.connect("./family.db")
-        lst3 = mc.divorce_after_death(connection)
-        self.assertNotEqual(['I4'],lst3)
+    def testNoDivorce3(self):
+        # this will test what happens if a divorce never happens
+        # Individual: ID Name Sex Birth Alive Death Child Family in list
+        individual = ['I5', 'Mona /Olsen/', 'F', '1929-03-15', 'F', '2007-07-06', 'None', 'F2']
+        # Family: ID Marriage Date Divorce Date Husband Wife Child
+        family = ['F2', '2010-09-08', None, 'I3', 'I5', 'I1']
+        # test to see if correct case runs from user story
+        self.assertFalse(mc.divorce_after_death(individual, family), 'I5')
 
-    def test_CorrectAnswer(self):
-        connection = sqlite3.connect("./family.db")
-        lst4 = mc.divorce_after_death(connection)
-        self.assertIsNot(['I5'], lst4)
+    def testIsNot4(self):
+        # this will test if the divorce is not after death
+        # Individual: ID Name Sex Birth Alive Death Child Family in list
+        individual = ['I5', 'Mona /Olsen/', 'F', '1929-03-15', 'F', '2007-07-06', 'None', 'F2']
+        # Family: ID Marriage Date Divorce Date Husband Wife Child
+        family = ['F2', '2010-09-08', '2005-05-06', 'I3', 'I5', 'I1']
+        # test to see if correct case runs from user story
+        self.assertIsNot(mc.divorce_after_death(individual, family), 'I5')
 
+    def testIsNone5(self):
+        # this will test if there is divorce post death
+        # Individual: ID Name Sex Birth Alive Death Child Family in list
+        individual = ['I5', 'Mona /Olsen/', 'F', '1929-03-15', 'F', '2007-07-06', 'None', 'F2']
+        # Family: ID Marriage Date Divorce Date Husband Wife Child
+        family = ['F2', '2010-09-08', '2015-08-09', 'I3', 'I5', 'I1']
+        # test to see if correct case runs from user story
+        self.assertTrue(mc.divorce_after_death(individual, family), 'I5')
 
 if __name__ == '__main__':
     unittest.main()
