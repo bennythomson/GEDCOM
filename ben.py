@@ -1,5 +1,5 @@
 import datetime
-def marriage_before_death(individual=None, family=None):
+def marriage_after_death(individual=None, family=None):
     #dont fear the reaper....
     if(individual != None and family != None):
 
@@ -12,7 +12,7 @@ def marriage_before_death(individual=None, family=None):
         marriage_date = datetime.datetime.strptime(marriage_date, '%Y-%m-%d').date()
         individuals_death = datetime.datetime.strptime(individual[5], '%Y-%m-%d').date()
 
-        if(individuals_death < marriage_date):
+        if(individuals_death <= marriage_date):
 
 
             print("Error US05: " + individual[0] + " marriage after death")

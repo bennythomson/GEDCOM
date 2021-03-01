@@ -3,43 +3,60 @@ import sqlite3
 import sys
 sys.path.append('../')
 import ben
-import CS555
 class TestUserStory05(unittest.TestCase):
 
     def test01(self):
-        
-        conn = None
 
-        try:
-            conn = sqlite3.connect(':memory:')
+        #in order:
+        #ID, Name, sex, birth, alive?, child, family
+        ind = ('I2', 'Marge /Bouvier/ ', 'F ', '1956-03-19', 'F', '1960-03-19', None, 'F1 ')
 
-        except Error as e:
-            print(e)
-
-
-        cursor = conn.cursor()
+        #ID, marriage, divorce, husband, wife, children
+        fam = ('F3', '1970-08-03', '1970-08-03', 'I2', 'I3', None)
 
 
-        #Setup the tables using the local SQL file
-        sql_file = open("../init_db.sql")
-        sql_as_string = sql_file.read()
-        cursor.executescript(sql_as_string)
+        self.assertEqual(ben.marriage_after_death(ind, fam), 'I2')
 
-        #Clears the database's tables
+    def test02(self):
 
-        sql = 'DELETE FROM individuals'
-        cursor.execute(sql)
+        self.assertIsNone(ben.marriage_after_death(None, None))
 
-        sql = 'DELETE FROM families'
-        cursor.execute(sql)
+    def test03(self):
+
+        #in order:
+        #ID, Name, sex, birth, alive?, child, family
+        ind = ('I2', 'Marge /Bouvier/ ', 'F ', '1956-03-19', 'F', '2000-03-19', None, 'F1 ')
+
+        #ID, marriage, divorce, husband, wife, children
+        fam = ('F3', '1970-08-03', '1970-08-03', 'I2', 'I3', None)
 
 
+        self.assertEqual(ben.marriage_after_death(ind, fam), None)
+
+    def test04(self):
+
+        #in order:
+        #ID, Name, sex, birth, alive?, child, family
+        ind = ('I2', 'Marge /Bouvier/ ', 'F ', '1956-03-19', 'F', '2000-03-19', None, 'F1 ')
+
+        #ID, marriage, divorce, husband, wife, children
+        fam = ('F3', '1970-08-03', None, 'I2', 'I3', None)
 
 
-        CS555.parse_data(conn, test_ged.splitlines())
+        self.assertEqual(ben.marriage_after_death(ind, fam), None)
 
-        lst = ben.marriage_before_death(connection)
-        self.assertEqual(['I5'], lst)
+    def test05(self):
+
+        #in order:
+        #ID, Name, sex, birth, alive?, child, family
+        ind = ('I2', 'Marge /Bouvier/ ', 'F ', None, 'F', '2000-01-01', None, 'F1 ')
+
+        #ID, marriage, divorce, husband, wife, children
+        fam = ('F3', '2000-01-01', '2000-01-01', 'I2', 'I3', None)
+
+
+        self.assertEqual(ben.marriage_after_death(ind, fam), 'I2')
+
 
 
 if __name__ == '__main__':
