@@ -99,7 +99,7 @@ def parse_data(conn):
         args_string = ""
         for arg in argue:
             args_string += arg + " "
-        args_string = args_string.strip("@")
+        args_string = args_string.replace("@","")
 
 
 
@@ -109,6 +109,7 @@ def parse_data(conn):
             #Current_id allows the lines following the creation of this individual to refer to the same person
             #Current_id is only updated when a new individual or family is created
             current_id = argue.strip("@")
+            current_id = current_id.strip()
             record_type = "INDI"
 
             #Creates a  new individual in the DB
