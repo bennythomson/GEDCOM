@@ -1,46 +1,48 @@
 import datetime
 
-def divorce_after_death(conn):
 
-    # create a list where individuals who were divorced post death go
-    divorced_after_death = []
+def divorce_after_death(individual=None, family=None):
+    # for those who don't have empty information
+    if individual is not None and family is not None:
 
-    # create a connection to the data base and specific info
-    connection = conn.cursor()
-    connection.execute("SELECT * FROM families")
+        # skip those who have no death date or divorce date
+        if individual[5] is None or family[2] is None:
+            return None
 
-    # fetch rows from the connection
-    rows = connection.fetchall()
+        # set the columns to check from the two data tables and convert dates for manipulation
+        divorce_date = family[2]
+        divorce_date = datetime.datetime.strptime(divorce_date, '%Y-%m-%d').date()
+        individuals_death = datetime.datetime.strptime(individual[5], '%Y-%m-%d').date()
 
-    for row in rows:
-
-        divorce_date = row[2]
-        if(divorce_date != None):
-            divorce_date = datetime.datetime.strptime(divorce_date, '%Y-%m-%d').date()
-
-        for indiv in row[3:]:
-
-            indiv= indiv.strip()
-            anotha_one = conn.cursor()
-
-            anotha_one.execute("SELECT * FROM individuals WHERE ID = ?",(str(indiv),))
-            indiv_result = anotha_one.fetchall()
+        # check if divorce date is greater than death date, print the error, return the individual
+        if divorce_date > individuals_death:
+            print("US06 Error: ", individual[0], " got divorced after death, review Simpson Family")
+            return individual[0]
 
 
-            if(indiv_result[0][5] != None):
-                individual_death = datetime.datetime.strptime(indiv_result[0][5], '%Y-%m-%d').date()
-
-                if(divorce_date != None):
-                    if(individual_death < divorce_date):
-
-                        divorced_after_death.append(indiv)
-                        print("Error: Shows " + indiv_result[0][0] + " was divorced after death")
-
-    return divorced_after_death
-
-
+    return None
 
 
 
 def mc_user_stories(conn):
-    divorce_after_death(conn)
+    # connect to the data base
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM families")
+
+    # fetch all the rows
+    rows = cur.fetchall()
+
+    for row in rows:
+
+        # manipulate data that for individuals that have information
+        for indiv in row[3:5]:
+            if indiv is not None:
+                indiv = indiv.strip()
+                new_cur = conn.cursor()
+
+                new_cur.execute("SELECT * FROM individuals WHERE ID = ?", (str(indiv),))
+                indiv_result = new_cur.fetchall()
+                # connect to the defined variable created before
+                divorce_after_death(indiv_result[0], row)
+
+
