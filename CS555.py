@@ -12,6 +12,9 @@ import paul
 
 print('Please specify GEDCOM file: ')
 
+filename = input()
+
+gedcomfile = open(filename,"r")
 
 #Open the file specified by the user
 
@@ -52,7 +55,7 @@ def init_db(db_file, sql_filename):
 
     return conn
 
-def parse_data(conn, gedcomfile):
+def parse_data(conn):
 
 
     current_line = 0
@@ -165,7 +168,7 @@ def parse_data(conn, gedcomfile):
             elif tag[0] == "FAMS":
                 query = "UPDATE individuals SET SPOUSE = ? WHERE ID = ?"
                 args_string = args_string.replace('@','')
-                #print(args_string)
+                print(args_string)
                 cur.execute(query,(args_string,current_id))
 
             elif tag[0] == "FAMC":
@@ -193,7 +196,7 @@ def parse_data(conn, gedcomfile):
 
 
         if int(level) > 0 and record_type=="FAM":
-            #print(line)
+            print(line)
             #Update each family row by row
             cur = conn.cursor()
 
@@ -254,25 +257,21 @@ def validate_output(conn):
 
 
 
-if __name__ == '__main__':
-
-    filename = input()
 
 
-    conn = init_db("./family.db","./init_db.sql")
-    file = open(filename,"r")
-    parse_data(conn, file)
+conn = init_db("./family.db","./init_db.sql")
+parse_data(conn)
 
-    connection = sqlite3.connect("./family.db")
-    cursor = connection.cursor()
-    cursor.execute("SELECT * FROM individuals")
-    mytable = from_db_cursor(cursor)
+connection = sqlite3.connect("./family.db")
+cursor = connection.cursor()
+cursor.execute("SELECT * FROM individuals")
+mytable = from_db_cursor(cursor)
 
-    print(mytable)
+print(mytable)
 
-    cursor.execute("SELECT * FROM families")
-    mytable = from_db_cursor(cursor)
+cursor.execute("SELECT * FROM families")
+mytable = from_db_cursor(cursor)
 
-    print(mytable)
+print(mytable)
 
-    validate_output(conn)
+validate_output(conn)
