@@ -14,25 +14,28 @@ def divorce_after_death(conn):
 
     for row in rows:
 
+        # storing all the divorce dates and putting them into the correct format
         divorce_date = row[2]
         if(divorce_date != None):
             divorce_date = datetime.datetime.strptime(divorce_date, '%Y-%m-%d').date()
 
+        # cgecj the IDs of peeps and fetches the connection
         for indiv in row[3:]:
-
             indiv= indiv.strip()
             anotha_one = conn.cursor()
 
             anotha_one.execute("SELECT * FROM individuals WHERE ID = ?",(str(indiv),))
             indiv_result = anotha_one.fetchall()
 
-
+            # storing all the death dates and putting them into the correct format
             if(indiv_result[0][5] != None):
                 individual_death = datetime.datetime.strptime(indiv_result[0][5], '%Y-%m-%d').date()
 
+                # comparing death to divorce dates
                 if(divorce_date != None):
                     if(individual_death < divorce_date):
 
+                        # append all peeps who were divorced post death
                         divorced_after_death.append(indiv)
                         print("Error: Shows " + indiv_result[0][0] + " was divorced after death")
 
@@ -44,3 +47,4 @@ def divorce_after_death(conn):
 
 def mc_user_stories(conn):
     divorce_after_death(conn)
+
