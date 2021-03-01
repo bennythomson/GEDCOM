@@ -178,10 +178,13 @@ def parse_data(conn):
 
             else:
                 pass
+            conn.commit()
+
 
 
         ## ADD NEW FAMILY, this works the same way as adding/updating an individual
         if int(level)==0 and tag=="FAM":
+
 
             current_id = argue.strip("@")
             record_type = "FAM"
@@ -193,6 +196,7 @@ def parse_data(conn):
 
 
         if int(level) > 0 and record_type=="FAM":
+            print(line)
             #Update each family row by row
             cur = conn.cursor()
 
@@ -201,13 +205,16 @@ def parse_data(conn):
                 query = "UPDATE families SET husband_id = ? WHERE ID = ?"
                 cur.execute(query,(args_string,current_id))
 
+                conn.commit()
             elif tag[0] == "WIFE":
                 query = "UPDATE families SET wife_id = ? WHERE ID = ?"
                 cur.execute(query,(args_string,current_id))
+                conn.commit()
 
             elif tag[0] == "CHIL":
                 query = "UPDATE families SET children = ? WHERE ID = ?"
                 cur.execute(query,(args_string,current_id))
+                conn.commit()
 
             elif tag[0] == "MARR":
                 data = next(gedcomfile).split()[2:]
@@ -220,6 +227,7 @@ def parse_data(conn):
 
                 query = "UPDATE families SET marriage_date = ? WHERE ID = ?"
                 cur.execute(query,(marriage_date,current_id))
+                conn.commit()
 
             elif tag[0] == "DIV":
                 data = next(gedcomfile).split()[2:]
@@ -231,6 +239,12 @@ def parse_data(conn):
                 divorce_date = datetime.datetime.strptime(data_string, '%d %b %Y ').date()
                 query = "UPDATE families SET divorce_date = ? WHERE ID = ?"
                 cur.execute(query,(divorce_date,current_id))
+                conn.commit()
+            else:
+                pass
+            conn.commit()
+
+
 
 
 
