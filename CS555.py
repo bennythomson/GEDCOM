@@ -120,7 +120,7 @@ def parse_data(conn, gedcomfile):
 
         #Now, we're looking to see if we can update a particular individual
 
-        #Ensure that the level is greater than 0 (implying these lines belong to the previously defined indiviudal)
+        #Ensure that the level is greater than 0 (implying these lines belong to the previously defined individual)
         if int(level) > 0 and record_type=="INDI":
             #update the indivual table
             cur = conn.cursor()
@@ -129,10 +129,10 @@ def parse_data(conn, gedcomfile):
 
             if tag[0] == "NAME":
                 query = "UPDATE individuals SET NAME = ? WHERE ID = ?"
-                cur.execute(query,(args_string,current_id))
+                cur.execute(query, (args_string, current_id))
             elif tag[0] == "SEX":
                 query = "UPDATE individuals SET SEX = ? WHERE ID = ?"
-                cur.execute(query,(args_string,current_id))
+                cur.execute(query, (args_string, current_id))
 
             elif tag[0] == "BIRT":
                 #This wonderful file format stores the date information on the next line, so we have to peek ahead to get the date of the indivual's birth or death
@@ -145,7 +145,7 @@ def parse_data(conn, gedcomfile):
 
                 query = "UPDATE individuals SET BIRT = ? WHERE ID = ?"
 
-                cur.execute(query,(birth_date,current_id))
+                cur.execute(query, (birth_date, current_id))
 
 
             elif tag[0] == "DEAT":
@@ -164,14 +164,14 @@ def parse_data(conn, gedcomfile):
 
             elif tag[0] == "FAMS":
                 query = "UPDATE individuals SET SPOUSE = ? WHERE ID = ?"
-                args_string = args_string.replace('@','')
+                args_string = args_string.replace('@', '')
                 #print(args_string)
-                cur.execute(query,(args_string,current_id))
+                cur.execute(query, (args_string, current_id))
 
             elif tag[0] == "FAMC":
                 query = "UPDATE individuals SET CHIL = ? WHERE ID = ?"
-                args_string = args_string.replace('@','')
-                cur.execute(query,(args_string,current_id))
+                args_string = args_string.replace('@', '')
+                cur.execute(query, (args_string, current_id))
 
             else:
                 pass
@@ -180,7 +180,7 @@ def parse_data(conn, gedcomfile):
 
 
         ## ADD NEW FAMILY, this works the same way as adding/updating an individual
-        if int(level)==0 and tag=="FAM":
+        if int(level) == 0 and tag == "FAM":
 
 
             current_id = argue.strip("@")
@@ -191,10 +191,9 @@ def parse_data(conn, gedcomfile):
             cur.execute(query, (current_id,))
             conn.commit()
 
-
         if int(level) > 0 and record_type=="FAM":
-            #print(line)
-            #Update each family row by row
+            # print(line)
+            # Update each family row by row
             cur = conn.cursor()
 
             if tag[0] == "HUSB":
@@ -242,10 +241,6 @@ def parse_data(conn, gedcomfile):
             conn.commit()
 
 
-
-
-
-
 def validate_output(conn):
     ben.ben_user_stories(conn)
     mc.mc_user_stories(conn)
@@ -253,11 +248,9 @@ def validate_output(conn):
     #runs tests to validate the output
 
 
-
 if __name__ == '__main__':
 
     filename = input()
-
 
     conn = init_db("./family.db","./init_db.sql")
     file = open(filename,"r")
