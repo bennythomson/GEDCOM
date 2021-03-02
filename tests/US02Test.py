@@ -14,7 +14,7 @@ class US02Test(unittest.TestCase):
         # If individual is Married After Birth
         individual = ['I2', 'Marge /Bouvier/ ', 'F', '1956-03-19', 'F', None, None, 'F1']
         family = ['F1', '1976-04-07', None, 'I1', 'I2', 'I7']
-        self.assertEqual(paul.birth_after_marriage(individual, family), 'I5')
+        self.assertTrue(paul.birth_after_marriage(individual, family), 'I5')
 
     def test02_Invalid(self):
         # If birth date is after marriage date
