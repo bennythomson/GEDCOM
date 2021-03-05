@@ -43,4 +43,4 @@ def ben_user_stories(conn):
                 new_cur.execute("SELECT * FROM individuals WHERE ID = ?",(str(indiv),))
                 indiv_result = new_cur.fetchall()
 
-                marriage_before_death(indiv_result[0], row)
+                marriage_after_death(indiv_result[0], row)
