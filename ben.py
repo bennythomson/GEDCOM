@@ -21,6 +21,9 @@ def marriage_after_death(individual=None, family=None):
 
 def marriage_before_divorce(family=None):
 
+    if(family[1] == None or family[2] == None):
+        return None
+
     marriage_date = datetime.datetime.strptime(family[1], '%Y-%m-%d').date()
     divorce_date = datetime.datetime.strptime(family[2], '%Y-%m-%d').date()
 
@@ -28,7 +31,7 @@ def marriage_before_divorce(family=None):
         print("Error US04: " + family[0] + " marriage before divorce")
         return family[0]
 
-return None
+    return None
 
 
 
