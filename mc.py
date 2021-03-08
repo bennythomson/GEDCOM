@@ -1,5 +1,5 @@
 import datetime
-
+from datetime import date
 
 def divorce_after_death(individual=None, family=None):
     # for those who don't have empty information
@@ -22,6 +22,29 @@ def divorce_after_death(individual=None, family=None):
 
     return None
 
+def less_than_150(individual=None):
+    if individual is not None:
+        birth_date = datetime.datetime.strptime(individual[3], '%Y-%m-%d').date()
+
+    if individual[5] is not None:
+        death_date = datetime.datetime.strptime(individual[5], '%Y-%m-%d').date()
+        age_1 = int((death_date - birth_date).days / 365)
+        # print(age_1)
+        if age_1 >= 150:
+            print("Error US07: " + individual[0] + " is older than 150 years old")
+            return individual[0]
+
+    if individual[5] is None:
+        age_2 = int((date.today() - birth_date).days / 365)
+        if age_2 >= 150:
+            print("Error US07: " + individual[0] + "is older than 150 years old")
+            return individual[0]
+
+    return None
+
+
+
+
 
 
 def mc_user_stories(conn):
@@ -30,12 +53,12 @@ def mc_user_stories(conn):
     cur.execute("SELECT * FROM families")
 
     # fetch all the rows
-    rows = cur.fetchall()
+    families = cur.fetchall()
 
-    for row in rows:
+    for family in families:
 
         # manipulate data that for individuals that have information
-        for indiv in row[3:5]:
+        for indiv in family[3:5]:
             if indiv is not None:
                 indiv = indiv.strip()
                 new_cur = conn.cursor()
@@ -43,6 +66,7 @@ def mc_user_stories(conn):
                 new_cur.execute("SELECT * FROM individuals WHERE ID = ?", (str(indiv),))
                 indiv_result = new_cur.fetchall()
                 # connect to the defined variable created before
-                divorce_after_death(indiv_result[0], row)
+                divorce_after_death(indiv_result[0], family)
+                less_than_150(indiv_result[0])
 
 
