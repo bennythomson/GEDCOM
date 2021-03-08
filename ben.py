@@ -14,11 +14,21 @@ def marriage_after_death(individual=None, family=None):
 
         if(individuals_death <= marriage_date):
 
-
             print("Error US05: " + individual[0] + " marriage after death")
             return individual[0]
 
     return None
+
+def marriage_before_divorce(family=None):
+
+    marriage_date = datetime.datetime.strptime(family[1], '%Y-%m-%d').date()
+    divorce_date = datetime.datetime.strptime(family[2], '%Y-%m-%d').date()
+
+    if(marriage_date >= divorce_date):
+        print("Error US04: " + family[0] + " marriage before divorce")
+        return family[0]
+
+return None
 
 
 
@@ -34,7 +44,7 @@ def ben_user_stories(conn):
 #    print(rows)
     for row in rows:
 
-
+        marriage_before_divorce(row)
         for indiv in row[3:5]:
             if indiv != None:
                 indiv= indiv.strip()
