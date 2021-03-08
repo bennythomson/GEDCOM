@@ -16,7 +16,7 @@ def divorce_after_death(individual=None, family=None):
 
         # check if divorce date is greater than death date, print the error, return the individual
         if divorce_date > individuals_death:
-            print("US06 Error: ", individual[0], " got divorced after death, review Simpson Family")
+            print("Error US06: ", individual[0], " got divorced after death, review Simpson Family")
             return individual[0]
 
 
