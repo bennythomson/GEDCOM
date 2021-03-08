@@ -37,7 +37,7 @@ def less_than_150(individual=None):
     if individual[5] is None:
         age_2 = int((date.today() - birth_date).days / 365)
         if age_2 >= 150:
-            print("Error US07: " + individual[0] + "is older than 150 years old")
+            print("Error US07: " + individual[0] + " is older than 150 years old")
             return individual[0]
 
     return None
