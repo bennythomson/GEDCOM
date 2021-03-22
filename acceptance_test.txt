@@ -1,0 +1,35 @@
+Please specify GEDCOM file: 
+simpson_family.ged
++-----+--------------------+-----+------------+-------+------------+------+--------+
+|  ID |        NAME        | SEX |    BIRT    | ALIVE |    DEAT    | CHIL | SPOUSE |
++-----+--------------------+-----+------------+-------+------------+------+--------+
+|  I1 |  Homer /Simpson/   |  M  | 2000-05-12 |   T   |    None    | F2   |  F1    |
+|  I2 |  Marge /Bouvier/   |  F  | 1956-03-19 |   T   |    None    | None |  F1    |
+|  I3 | Abraham /Simpson/  |  M  | 1920-05-19 |   T   |    None    | F4   |  F3    |
+|  I4 |  Amber /Simpson/   |  F  | 1940-04-04 |   T   |    None    | None |  F3    |
+|  I5 |   Mona /Olsen/     |  F  | 2010-03-15 |   F   | 2008-07-06 | None |  F2    |
+|  I6 |  Abbey /Simpson/   |  F  | 1960-11-08 |   T   |    None    | F3   |  F5    |
+|  I7 |  Bart /Simpson/    |  M  | 1979-04-01 |   T   |    None    | F1   |  None  |
+|  I8 |  Lisa /Simpson/    |  F  | 1984-05-09 |   T   |    None    | F1   |  None  |
+|  I9 | Maggie /Simpson/   |  F  | 1989-12-17 |   T   |    None    | F1   |  None  |
+| I10 | Orville /Simpson/  |  M  | 1860-08-06 |   F   | 1945-05-20 | None |  F4    |
+| I11 |  Yuma /Hickman/    |  F  | 1850-06-07 |   F   | 1940-07-05 | None |  F4    |
+| I12 |  Buck /Simpson/    |  M  | 1866-07-02 |   T   |    None    | None |  F5    |
++-----+--------------------+-----+------------+-------+------------+------+--------+
++----+---------------+--------------+------------+---------+----------+
+| id | marriage_date | divorce_date | husband_id | wife_id | children |
++----+---------------+--------------+------------+---------+----------+
+| F1 |   1860-04-07  |     None     |    I1      |   I2    |   I9     |
+| F2 |   2010-09-08  |  2009-05-06  |    I3      |   I5    |   I1     |
+| F3 |   1970-10-05  |  1984-06-13  |    I3      |   I4    |   I6     |
+| F4 |   1900-08-03  |     None     |    I10     |   I11   |   I3     |
+| F5 |   1970-08-03  |     None     |    I12     |   I6    |   None   |
++----+---------------+--------------+------------+---------+----------+
+Error US04: F2 marriage before divorce
+Error US05: I5 marriage after death
+Error US06:  I5  got divorced after death, review Simpson Family
+Error US07: I12 is older than 150 years old
+Error US02: I1 marriage before birth
+Error US02: I2 marriage before birth
+Error US03: I5death before birth
+benthomson@Bens-MBP GEDCOM % 
