@@ -6,11 +6,14 @@ def divorce_after_death(individual=None, family=None):
     if individual is not None and family is not None:
 
         # skip those who have no death date or divorce date
+        # Bad Smell #1: Can improve gathering data from the data base
         if individual[5] is None or family[2] is None:
             return None
 
         # set the columns to check from the two data tables and convert dates for manipulation
         divorce_date = family[2]
+
+        # Bad Smell #2: Need a more uniform way to format the date
         divorce_date = datetime.datetime.strptime(divorce_date, '%Y-%m-%d').date()
         individuals_death = datetime.datetime.strptime(individual[5], '%Y-%m-%d').date()
 
