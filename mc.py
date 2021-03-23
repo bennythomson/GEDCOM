@@ -3,19 +3,20 @@ from datetime import date
 
 def divorce_after_death(individual=None, family=None):
     # for those who don't have empty information
-    if individual is not None and family is not None:
+    if individual and family is not None:
 
         # skip those who have no death date or divorce date
-        # Bad Smell #1: Can improve gathering data from the data base
+
+        # Bad Smell #1:  There is duplicated code for is None
         if individual[5] is None or family[2] is None:
             return None
 
-        # set the columns to check from the two data tables and convert dates for manipulation
-        divorce_date = family[2]
+        # Bad Smell #2: There is duplicated code for getting the date
+        def clean_date(date_str):
+            return datetime.datetime.strptime(date_str, '%Y-%m-%d').date()
 
-        # Bad Smell #2: Need a more uniform way to format the date
-        divorce_date = datetime.datetime.strptime(divorce_date, '%Y-%m-%d').date()
-        individuals_death = datetime.datetime.strptime(individual[5], '%Y-%m-%d').date()
+        divorce_date = clean_date(family[2])
+        individuals_death = clean_date(individual[5])
 
         # check if divorce date is greater than death date, print the error, return the individual
         if divorce_date > individuals_death:

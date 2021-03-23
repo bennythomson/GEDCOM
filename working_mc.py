@@ -38,7 +38,7 @@ def divorce_after_death(individual=None, family=None):
             return None
 
         # set the columns to check from the two data tables and convert dates for manipulation
-        divorce_date = formatting(family.marriage)
+        divorce_date = formatting(family.divorce)
         individuals_death = formatting(individual.death)
 
         # check if divorce date is greater than death date, print the error, return the individual
