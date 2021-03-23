@@ -6,7 +6,7 @@ from dateutil.relativedelta import relativedelta
 from prettytable import from_db_cursor
 
 import ben
-import mc
+import HW06
 import paul
 
 
@@ -243,7 +243,7 @@ def parse_data(conn, gedcomfile):
 
 def validate_output(conn):
     ben.ben_user_stories(conn)
-    mc.mc_user_stories(conn)
+    HW06.mc_user_stories(conn)
     paul.paul_user_stories(conn)
     #runs tests to validate the output
 

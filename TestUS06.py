@@ -1,7 +1,7 @@
 import unittest
 import sys
 sys.path.append('../')
-import mc
+import HW06
 
 class TestUS06(unittest.TestCase):
     def testCorrectCase1(self):
@@ -11,7 +11,7 @@ class TestUS06(unittest.TestCase):
         # Family: ID Marriage Date Divorce Date Husband Wife Child
         family = ['F2', '2010-09-08', '2011-05-06', 'I3', 'I5', 'I1']
         # test to see if correct case runs from user story
-        self.assertEqual(mc.divorce_after_death(individual,family), 'I5')
+        self.assertEqual(HW06.divorce_after_death(individual,family), 'I5')
 
     def testIncorrectCase2(self):
         # we will check if an error occurs when the death death is greater than divorce date
@@ -20,7 +20,7 @@ class TestUS06(unittest.TestCase):
         # Family: ID Marriage Date Divorce Date Husband Wife Child
         family = ['F2', '2010-09-08', '2011-05-06', 'I3', 'I5', 'I1']
         # test to see if correct case runs from user story
-        self.assertNotEqual(mc.divorce_after_death(individual, family), 'I5')
+        self.assertNotEqual(HW06.divorce_after_death(individual, family), 'I5')
 
     def testNoDivorce3(self):
         # this will test what happens if a divorce never happens
@@ -29,7 +29,7 @@ class TestUS06(unittest.TestCase):
         # Family: ID Marriage Date Divorce Date Husband Wife Child
         family = ['F2', '2010-09-08', None, 'I3', 'I5', 'I1']
         # test to see if correct case runs from user story
-        self.assertFalse(mc.divorce_after_death(individual, family), 'I5')
+        self.assertFalse(HW06.divorce_after_death(individual, family), 'I5')
 
     def testIsNot4(self):
         # this will test if the divorce is not after death
@@ -38,7 +38,7 @@ class TestUS06(unittest.TestCase):
         # Family: ID Marriage Date Divorce Date Husband Wife Child
         family = ['F2', '2010-09-08', '2005-05-06', 'I3', 'I5', 'I1']
         # test to see if correct case runs from user story
-        self.assertIsNot(mc.divorce_after_death(individual, family), 'I5')
+        self.assertIsNot(HW06.divorce_after_death(individual, family), 'I5')
 
     def testIsNone5(self):
         # this will test if there is divorce post death
@@ -47,7 +47,7 @@ class TestUS06(unittest.TestCase):
         # Family: ID Marriage Date Divorce Date Husband Wife Child
         family = ['F2', '2010-09-08', '2015-08-09', 'I3', 'I5', 'I1']
         # test to see if correct case runs from user story
-        self.assertTrue(mc.divorce_after_death(individual, family), 'I5')
+        self.assertTrue(HW06.divorce_after_death(individual, family), 'I5')
 
 if __name__ == '__main__':
     unittest.main()
