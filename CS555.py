@@ -5,9 +5,7 @@ import datetime
 from dateutil.relativedelta import relativedelta
 from prettytable import from_db_cursor
 
-import ben
-import HW06
-import paul
+import Sprint1
 import Sprint02
 
 print('Please specify GEDCOM file: ')
@@ -255,11 +253,10 @@ def parse_data(conn, gedcomfile):
 
 
 def validate_output(conn):
-    ben.ben_user_stories(conn)
-    HW06.mc_user_stories(conn)
-    paul.paul_user_stories(conn)
-    Sprint02.user_stories(conn)
     #runs tests to validate the output
+    Sprint1.user_stories(conn)
+    #Sprint02.user_stories(conn)
+
 
 
 if __name__ == '__main__':

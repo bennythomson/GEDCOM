@@ -36,4 +36,9 @@ class Family:
         return indiv_obj
 
     def get_children(self):
-        return self.children.splt(',')
+        #returns a list of the children's IDs
+        if self.children is None:
+            return []
+        explode = self.children.split(',')
+
+        return explode[:len(explode)-1]
