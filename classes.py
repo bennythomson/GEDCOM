@@ -21,3 +21,19 @@ class Family:
         self.husband = husband
         self.wife = wife
         self.children = children
+
+    def get_indiv(ID):
+        #takes individual's ID (I9 for example)
+        connection = sqlite3.connect("./family.db")
+        cur = connection.cursor()
+        # Query all familes in database
+        cur.execute("SELECT * FROM individuals WHERE ID = ?", (str(ID),))
+        indiv_result = cur.fetchall()
+
+        indiv_obj = Individual(indiv_result[0][0], indiv_result[0][1], indiv_result[0][2], indiv_result[0][3],
+                               indiv_result[0][4], indiv_result[0][5], indiv_result[0][6], indiv_result[0][7])
+
+        return indiv_obj
+
+    def get_children(self):
+        return self.children.splt(',')

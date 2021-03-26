@@ -1,46 +1,13 @@
 import datetime
+import classes
 import sqlite3
 from datetime import date
 
-class Individual:
-
-    def __init__(self, id, name, sex, birthday, alive, death, children, spouse):
-
-        self.id = id
-        self.name = name
-        self.sex = sex
-        self.birthday = birthday
-        self.alive = alive
-        self.death = death
-        self.children = children
-        self.spouse = spouse
-
-class Family:
-    def __init__(self, id, marriage, divorce, husband, wife, children):
-        #ID, marriage, divorce, husband, wife, children
-        self.id = id
-        self.marriage = marriage
-        self.divorce = divorce
-        self.husband = husband
-        self.wife = wife
-        self.children = children
 
 def format_date(date_str):
     #takes in a string repreenting a date in Y-m-d format and returns a datetime object
     return datetime.datetime.strptime(date_str, '%Y-%m-%d').date()
 
-def get_indiv(ID):
-    #takes I1
-    connection = sqlite3.connect("./family.db")
-    cur = connection.cursor()
-    # Query all familes in database
-    cur.execute("SELECT * FROM individuals WHERE ID = ?", (str(ID),))
-    indiv_result = cur.fetchall()
-
-    indiv_obj = Individual(indiv_result[0][0], indiv_result[0][1], indiv_result[0][2], indiv_result[0][3],
-                           indiv_result[0][4], indiv_result[0][5], indiv_result[0][6], indiv_result[0][7])
-
-    return indiv_obj
 
 
 
@@ -106,12 +73,12 @@ def no_bigamy(family1 = None, family2  = None):
             return (family1, family2)
     return None
 
-def Parents_not_too_old(family = None):
-    if(family ==None):
+def parents_not_too_old(family = None):
+    if(family == None):
         return None
     wife = get_indiv(family.wife)
     husband = get_indiv(family.husband)
-    child = get_indiv(family.children)
+    children = get_indiv(family.children)
 
     if (wife != None or husband != None or child != None):
         wife_death_date = format_date(wife.death)
@@ -156,6 +123,3 @@ def user_stories(conn):
                 indiv_obj = Individual(indiv_result[0][0], indiv_result[0][1], indiv_result[0][2], indiv_result[0][3], indiv_result[0][4], indiv_result[0][5], indiv_result[0][6], indiv_result[0][7])
 
                 birth_before_parents_marriage(indiv_obj, fam_obj)
-
-
-
