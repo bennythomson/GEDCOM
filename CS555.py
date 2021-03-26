@@ -208,8 +208,21 @@ def parse_data(conn, gedcomfile):
                 conn.commit()
 
             elif tag[0] == "CHIL":
+
+
+                cur.execute("SELECT children FROM families WHERE ID = ? ",(str(current_id),))
+                existing_data = cur.fetchall()
+
+                all_children = ""
+                for child in existing_data:
+                    if child[0] is not None:
+                        all_children += child[0] + args_string + ","
+                    else:
+                        all_children += args_string + ","
+
+
                 query = "UPDATE families SET children = ? WHERE ID = ?"
-                cur.execute(query,(args_string,current_id))
+                cur.execute(query,(all_children,current_id))
                 conn.commit()
 
             elif tag[0] == "MARR":
