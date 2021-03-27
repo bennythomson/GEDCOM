@@ -1,3 +1,4 @@
+import sqlite3
 # Initialize variables for the individual dnd family fields (pull up fields)
 # Individual's Attributes: ID, Name, sex, birth, aliveBoolean, death, child, spouse
 class Individual:
@@ -22,13 +23,16 @@ class Family:
         self.wife = wife
         self.children = children
 
-    def get_indiv(ID):
+    def get_indiv(self, ID):
         #takes individual's ID (I9 for example)
         connection = sqlite3.connect("./family.db")
         cur = connection.cursor()
         # Query all familes in database
-        cur.execute("SELECT * FROM individuals WHERE ID = ?", (strip(str(ID)),))
+        cur.execute("SELECT * FROM individuals WHERE ID = ?", (str(ID).strip(),))
         indiv_result = cur.fetchall()
+
+        if not indiv_result:
+            return None
 
         indiv_obj = Individual(indiv_result[0][0], indiv_result[0][1], indiv_result[0][2], indiv_result[0][3],
                                indiv_result[0][4], indiv_result[0][5], indiv_result[0][6], indiv_result[0][7])

@@ -255,7 +255,7 @@ def parse_data(conn, gedcomfile):
 def validate_output(conn):
     #runs tests to validate the output
     Sprint1.user_stories(conn)
-    #Sprint02.user_stories(conn)
+    Sprint02.user_stories(conn)
 
 
 

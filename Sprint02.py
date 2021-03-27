@@ -6,7 +6,8 @@ from datetime import date
 
 def format_date(date_str):
     #takes in a string representing a date in Y-m-d format and returns a datetime object
-
+    if date_str is None:
+        return None
     return datetime.datetime.strptime(date_str, '%Y-%m-%d').date()
 
 
@@ -85,18 +86,25 @@ def no_bigamy(family1 = None, family2  = None):
 def parents_not_too_old(family = None):
     if(family == None):
         return None
-    wife = get_indiv(family.wife)
-    husband = get_indiv(family.husband)
-    children = get_indiv(family.children)
+    #print(family.wife)
+    wife = family.get_indiv(family.wife)
+    husband = family.get_indiv(family.husband)
+    children = map(family.get_indiv, family.get_children()) #this is a list of Individual objects
+
+    if wife.birthday is None or husband.birthday is None:
+        return None
+        
+    wife_birth_date = format_date(wife.birthday)
+    wife_age = int((wife_death_date - wife_birth_date).days / 365)
+
+    husband_birth_date = format_date(husband.birthday)
+    husband_age = int((husband_death_date - husband_birth_date).days / 365)
+
+    for child in children:
+
 
     if (wife != None or husband != None or child != None):
-        wife_death_date = format_date(wife.death)
-        wife_birth_date = format_date(wife.birthday)
-        wife_age = int((wife_death_date - wife_birth_date).days / 365)
 
-        husband_death_date = format_date(husband.death)
-        husband_birth_date = format_date(husband.birthday)
-        husband_age = int((husband_death_date - husband_birth_date).days / 365)
 
         child_birth_date = format_date(child.birthday)
 
