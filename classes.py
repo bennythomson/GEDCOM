@@ -27,7 +27,7 @@ class Family:
         connection = sqlite3.connect("./family.db")
         cur = connection.cursor()
         # Query all familes in database
-        cur.execute("SELECT * FROM individuals WHERE ID = ?", (str(ID),))
+        cur.execute("SELECT * FROM individuals WHERE ID = ?", (strip(str(ID)),))
         indiv_result = cur.fetchall()
 
         indiv_obj = Individual(indiv_result[0][0], indiv_result[0][1], indiv_result[0][2], indiv_result[0][3],

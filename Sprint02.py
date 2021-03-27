@@ -121,6 +121,7 @@ def user_stories(conn):
         #loop through each family, checking the divorce/marriage dates
         fam_obj = classes.Family(family[0], family[1], family[2],family[3],family[4],family[5],)
         parents_not_too_old(fam_obj)
+        marriage_after_14(fam_obj)
 
         #loop thru families again for bigamy method
         for family2 in families:
@@ -144,4 +145,3 @@ def user_stories(conn):
 
                 birth_before_parents_marriage(fam_obj)
                 birth_before_parents_death(fam_obj)
-                marriage_after_14(indiv_obj, fam_obj)
