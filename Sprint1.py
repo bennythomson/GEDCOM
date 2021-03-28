@@ -138,7 +138,7 @@ def user_stories(conn):
 
 
         #loop through each individual in the family
-        for indiv in list(family[3:4]) + fam_obj.get_children():
+        for indiv in list(family[3:4]) + fam_obj.get_children_ids():
             #print("family children: ")
             #print(fam_obj.get_children())
             if indiv != None:

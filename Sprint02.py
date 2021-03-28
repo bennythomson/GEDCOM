@@ -2,6 +2,8 @@ import datetime
 import classes
 import sqlite3
 from datetime import date
+from datetime import timedelta
+from dateutil.relativedelta import relativedelta
 
 
 def format_date(date_str):
@@ -42,23 +44,24 @@ def marriage_after_14(family=None):
     Takes in a Family object, and gets the Individual corresponding to the Husband and Wife.
     From there, we can compare each person's birthday and the date of their marriage'''
 
-    if(family != None or family.marriage is None):
+    if(family is None or family.marriage is None):
+
         return None
 
     marriage_date = format_date(family.marriage)
-    husband = family.get_indiv(family.husband)
-    wife = family.get_indiv(family.wife)
+    husband = family.husband
+    wife = family.wife
 
     husband_birthday = format_date(husband.birthday)
     wife_birthday = format_date(wife.birthday)
 
-    if((husband_birthday + relativedelta(years=14)) <= marriage_date):
+    if((husband_birthday + relativedelta(years=14)) >= marriage_date):
         print("Error US10: Family " + family.id + " husband " + husband.id + " was married before 14")
         return husband.id
 
-    if((wife_birthday + relativedelta(years=14)) <= marriage_date):
+    if((wife_birthday + relativedelta(years=14)) >= marriage_date):
         print("Error US10: Family " + family.id + " wife " + wife.id + " was married before 14")
-        return husband.id
+        return wife.id
 
     return None
 
@@ -76,11 +79,11 @@ def no_bigamy(family1 = None, family2  = None):
     return None
 
 def parents_not_too_old(family = None):
-    if(family == None):
+    if(family is None):
         return None
     #print(family.wife)
-    wife = family.get_indiv(family.wife)
-    husband = family.get_indiv(family.husband)
+    wife = family.wife
+    husband = family.husband
     children = family.get_children() #this is a list of Individual objects
 
     if wife.birthday is None or husband.birthday is None:
@@ -136,5 +139,6 @@ def user_stories(conn):
 
         #loop thru families again for bigamy method
         for family2 in families:
+
             fam_obj2 = classes.Family(family2[0], family2[1], family2[2],family2[3],family2[4],family2[5],)
             no_bigamy(fam_obj, fam_obj2)

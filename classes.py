@@ -23,8 +23,14 @@ class Family:
         self.wife = wife
         self.children = children
 
+        if not isinstance(husband, Individual):
+            self.husband = self.get_indiv(husband)
+
+        if not isinstance(wife, Individual):
+            self.wife = self.get_indiv(wife)
+
     def get_indiv(self, ID):
-        #takes individual's ID (I9 for example)
+
         connection = sqlite3.connect("./family.db")
         cur = connection.cursor()
         # Query all familes in database
@@ -45,4 +51,12 @@ class Family:
             return []
         explode = self.children.split(',')
 
-        return map(family.get_indiv, explode[:len(explode)-1])
+        return map(self.get_indiv, explode[:len(explode)-1])
+
+    def get_children_ids(self):
+        #returns a list of Family's children's IDs
+        if self.children is None:
+            return []
+        explode = self.children.split(',')
+
+        return explode[:len(explode)-1]
