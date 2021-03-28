@@ -128,9 +128,9 @@ def user_stories(conn):
     #Query all familes in database
     cur.execute("SELECT * FROM families")
 
-    familes = cur.fetchall()
+    families = cur.fetchall()
 
-    for family in familes:
+    for family in families:
         #loop through each family, checking the divorce/marriage dates
         fam_obj = classes.Family(family[0], family[1], family[2],family[3],family[4],family[5],)
 
