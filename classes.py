@@ -40,9 +40,9 @@ class Family:
         return indiv_obj
 
     def get_children(self):
-        #returns a list of the children's IDs
+        #returns a list of the Individual objects, corresponding to the children in the family
         if self.children is None:
             return []
         explode = self.children.split(',')
 
-        return explode[:len(explode)-1]
+        return map(family.get_indiv, explode[:len(explode)-1])
