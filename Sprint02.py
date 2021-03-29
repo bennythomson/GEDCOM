@@ -67,6 +67,10 @@ def marriage_after_14(family=None):
     husband_birthday = format_date(husband.birthday)
     wife_birthday = format_date(wife.birthday)
 
+    if((husband_birthday + relativedelta(years=14)) >= marriage_date and (wife_birthday + relativedelta(years=14)) >= marriage_date):
+        print("Error US10: Family " + family.id + " husband " + husband.id + " and wife " + wife.id + " were married before 14")
+        return (husband.id, wife.id)
+
     if((husband_birthday + relativedelta(years=14)) >= marriage_date):
         print("Error US10: Family " + family.id + " husband " + husband.id + " was married before 14")
         return husband.id
