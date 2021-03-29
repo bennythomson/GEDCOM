@@ -46,6 +46,18 @@ class TestUserStory10(unittest.TestCase):
         self.assertEqual(Sprint02.marriage_after_14(fam), None)
 
 class TestUserStory11(unittest.TestCase):
+    '''no bigamy'''
+    def test01(self):
+        husband = classes.Individual('I1', 'Homer Simpson', 'M', '1900-01-01', 'T', '1980-01-01', None, 'F1')
+        wife = classes.Individual('I2', 'Marge Bouiver', 'F', '1900-01-01', 'T', '1980-01-01', None, 'F1')
+
+        #passing in objects as the husband and wife instead of their IDs
+        fam1 = classes.Family('F1', '1960-01-01', None, husband, wife, None)
+        fam2 = classes.Family('F2', '1980-01-01', None, husband, wife, None)
+
+        self.assertEqual(Sprint02.no_bigamy(fam1, fam2), (fam1, fam2))
+
+
 
 
 if __name__ == '__main__':
