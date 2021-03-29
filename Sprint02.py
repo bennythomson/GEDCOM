@@ -31,13 +31,23 @@ def birth_before_parents_marriage(family=None):
             for child in children:
                 if format_date(child.birthday) <= marriage_date:
                     print("Error US08: Family " + family.id + "  Your parents were scandalous and had a child out of wed lock")
-
+    return None
 
 #TODO - similar as above method
 def birth_before_parents_death(family=None):
     '''Takes in family object. Then, get the Individual for both parents and each child. Then, loop thru
     all the children and compare their birthdays with the husband and wife birthday'''
-    pass
+    if family != None:
+        if family.marriage == None:
+            return None
+        if family.children != None:
+            children = family.get_children()
+            mom = family.wife
+            dad = family.husband
+            for child in children:
+                if format_date(child.birthday) >= format_date(mom.death):
+                    print("Error US09: Child", child.id, "was born after mother's death")
+                # if format_date(child.birthday)
 
 def marriage_after_14(family=None):
     '''returns an error if an individual was married before they were 14
@@ -120,8 +130,19 @@ def parents_not_too_old(family = None):
     return None
 
 #TODO: User story 13
-def sibling_spacing(family = None):
-    pass
+def sibling_spacing(family= None):
+    if family != None:
+        if family.marriage == None:
+            return None
+        if family.children != None:
+            children = family.get_children()
+            for child in children:
+                child_1 = format_date(child.birthday).days
+                child_2 = format_date(child.birthday).days
+                if child_1 - child_2 <= 243:
+                    print("Error US13: Siblings from family", family.id, "are less than 8 months apart")
+                if (child_1 - child_2) > 2 or (child_1 - child_2) < 243:
+                    print("Error US13: Twins from family", family.id, "are more than 2 days apart")
 
 def user_stories(conn):
 
