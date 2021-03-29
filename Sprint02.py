@@ -45,9 +45,11 @@ def birth_before_parents_death(family=None):
             mom = family.wife
             dad = family.husband
             for child in children:
-                if format_date(child.birthday) >= format_date(mom.death):
+                kiddo = format_date(child.birthday)
+                if kiddo >= format_date(mom.death):
                     print("Error US09: Child", child.id, "was born after mother's death")
-                # if format_date(child.birthday)
+                if format_date(dad.death).days - 273 >= kiddo:
+                    print("Error US09: Child", child.id, "was born more than 9 months before father's death")
 
 def marriage_after_14(family=None):
     '''returns an error if an individual was married before they were 14
