@@ -44,6 +44,10 @@ def birth_before_parents_death(family=None):
             children = family.get_children()
             mom = family.wife
             dad = family.husband
+
+            if mom.death is None or dad.death is None:
+                return None
+
             for child in children:
                 kiddo = format_date(child.birthday)
                 if kiddo >= format_date(mom.death):
@@ -127,7 +131,7 @@ def parents_not_too_old(family = None):
         child_birth_date = format_date(child.birthday)
 
         if ((wife_birth_date - child_birth_date).days /365 >= 60 or (husband_birth_date - child_birth_date).days / 365 >= 80):
-            print("Error US12: " + child.id +" parents are ollllldddddddd")
+            print("Error US12: " + child.id +" parents are old")
             return child.id
     return None
 
