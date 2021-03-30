@@ -27,7 +27,7 @@ def birth_before_parents_marriage(family=None):
             marriage_date = format_date(family.marriage)
 
             #This gets the list of children from the family, and converts them into an Individual object
-            children = family.children
+            children = family.get_children()
             for child in children:
                 if format_date(child.birthday) <= marriage_date:
                     print("Error US08: Family " + family.id + "  Your parents were scandalous and had a child out of wed lock")
@@ -42,7 +42,7 @@ def birth_before_parents_death(family=None):
         if family.marriage == None:
             return None
         if family.children != None:
-            children = family.children
+            children = family.get_children()
             mom = family.wife
             dad = family.husband
 
@@ -107,7 +107,7 @@ def parents_not_too_old(family = None):
     #print(family.wife)
     wife = family.wife
     husband = family.husband
-    children = family.children #this is a list of Individual objects
+    children = family.get_children() #this is a list of Individual objects
 
     if wife.birthday is None or husband.birthday is None:
         return None
