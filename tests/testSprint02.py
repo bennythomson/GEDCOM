@@ -69,6 +69,19 @@ class TestUserStory12(unittest.TestCase):
 
         self.assertEqual(Sprint02.parents_not_too_old(fam1),'I1')
 
+class TestUserStory13(unittest.TestCase):
+
+    def test01(self):
+        wife = classes.Individual('I2', 'Marge Simpson', 'F', '1900-01-01', 'T', '2020-01-01', None, 'F1')
+        children_1 = classes.Individual('I1', 'Homer Simpson', 'M', '2000-01-01', 'T', None, None, 'F1')
+        children_2 = classes.Individual('I4', 'Alex Simpson', 'M', '2000-05-01', 'T', None, None, 'F1')
+        husband = classes.Individual('I3', 'Abraham Simpson', 'M', '1800-01-01', 'T', '1980-01-01', 'I1, I4', 'F1')
+
+        #passing in objects as the husband and wife instead of their IDs
+        fam1 = classes.Family('F1', '2010-09-08', None, husband, wife, [children_1, children_2])
+
+        self.assertEqual(Sprint02.sibling_spacing(fam1), 'F1')
+
 
 
 if __name__ == '__main__':

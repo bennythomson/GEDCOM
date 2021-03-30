@@ -130,7 +130,7 @@ def parents_not_too_old(family = None):
 
         child_birth_date = format_date(child.birthday)
 
-        if ((wife_birth_date - child_birth_date).days /365 >= 60 or (husband_birth_date - child_birth_date).days / 365 >= 80):
+        if (-(wife_birth_date - child_birth_date).days /365 >= 60 or (husband_birth_date - child_birth_date).days / 365 >= 80):
             print("Error US12: " + child.id +" parents are old")
             return child.id
     return None
@@ -141,14 +141,16 @@ def sibling_spacing(family= None):
         if family.marriage == None:
             return None
         if family.children != None:
-            children = family.get_children()
+            children = family.children
             for child in children:
-                child_1 = format_date(child.birthday).days
-                child_2 = format_date(child.birthday).days
-                if child_1 - child_2 <= 243:
+                child_1 = format_date(child.birthday)
+                child_2 = format_date(child.birthday)
+                if int((child_1 - child_2).days) <= 243:
                     print("Error US13: Siblings from family", family.id, "are less than 8 months apart")
-                if (child_1 - child_2) > 2 or (child_1 - child_2) < 243:
+                    return family.id
+                if int((child_1 - child_2).days) > 2 or int((child_1 - child_2).days) < 243:
                     print("Error US13: Twins from family", family.id, "are more than 2 days apart")
+                    return family.id
 
 def user_stories(conn):
 
