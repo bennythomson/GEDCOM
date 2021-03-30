@@ -104,7 +104,7 @@ def parents_not_too_old(family = None):
     #print(family.wife)
     wife = family.wife
     husband = family.husband
-    children = family.get_children() #this is a list of Individual objects
+    children = family.children #this is a list of Individual objects
 
     if wife.birthday is None or husband.birthday is None:
         return None

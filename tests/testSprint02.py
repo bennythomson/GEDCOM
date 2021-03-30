@@ -57,6 +57,17 @@ class TestUserStory11(unittest.TestCase):
 
         self.assertEqual(Sprint02.no_bigamy(fam1, fam2), (fam1, fam2))
 
+class TestUserStory12(unittest.TestCase):
+
+    def test01(self):
+        wife = classes.Individual('I2', 'Marge Simpson', 'F', '1900-01-01', 'T', '2020-01-01', None, 'F1')
+        children = classes.Individual('I1', 'Homer Simpson', 'M', '2000-01-01', 'T', None, None, 'F1')
+        husband = classes.Individual('I3', 'Abraham Simpson', 'M', '1800-01-01', 'T', '1980-01-01', 'I1', 'F1')
+
+        #passing in objects as the husband and wife instead of their IDs
+        fam1 = classes.Family('F1', '2010-09-08', None, husband, wife, [children])
+
+        self.assertEqual(Sprint02.parents_not_too_old(fam1),'I1')
 
 
 

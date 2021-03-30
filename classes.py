@@ -49,6 +49,8 @@ class Family:
         #returns a list of the Individual objects, corresponding to the children in the family
         if self.children is None:
             return []
+
+
         explode = self.children.split(',')
 
         return map(self.get_indiv, explode[:len(explode)-1])
