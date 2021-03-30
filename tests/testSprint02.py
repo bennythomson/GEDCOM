@@ -17,15 +17,15 @@ class TestUserStory08(unittest.TestCase):
         #passing in objects as the husband and wife instead of their IDs
         fam1 = classes.Family('F1', '2010-09-08', None, husband, wife, [children])
 
-        self.assertEqual(Sprint02.birth_before_parents_marriage(fam1), 'I1')
+        self.assertEqual(Sprint02.birth_before_parents_marriage(fam1), 'F1')
 
 class TestUserStory09(unittest.TestCase):
 #birth after death of parents
 
     def test01(self):
         wife = classes.Individual('I2', 'Marge Simpson', 'F', '1900-01-01', 'F', '1920-01-01', None, 'F1')
-        children = classes.Individual('I1', 'Homer Simpson', 'M', '2000-01-01', 'T', None, None, 'F1')
-        husband = classes.Individual('I3', 'Abraham Simpson', 'M', '2020-01-01', 'T', None, 'I1', 'F1')
+        children = classes.Individual('I1', 'Homer Simpson', 'M', '2022-01-01', 'T', None, None, 'F1')
+        husband = classes.Individual('I3', 'Abraham Simpson', 'M', '2020-01-01', 'T', '2021-01-1', 'I1', 'F1')
 
         #passing in objects as the husband and wife instead of their IDs
         fam1 = classes.Family('F1', '2010-09-08', None, husband, wife, [children])

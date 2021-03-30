@@ -27,10 +27,11 @@ def birth_before_parents_marriage(family=None):
             marriage_date = format_date(family.marriage)
 
             #This gets the list of children from the family, and converts them into an Individual object
-            children = family.get_children()
+            children = family.children
             for child in children:
                 if format_date(child.birthday) <= marriage_date:
                     print("Error US08: Family " + family.id + "  Your parents were scandalous and had a child out of wed lock")
+                    return family.id
     return None
 
 #TODO - similar as above method
@@ -41,7 +42,7 @@ def birth_before_parents_death(family=None):
         if family.marriage == None:
             return None
         if family.children != None:
-            children = family.get_children()
+            children = family.children
             mom = family.wife
             dad = family.husband
 
@@ -52,8 +53,10 @@ def birth_before_parents_death(family=None):
                 kiddo = format_date(child.birthday)
                 if kiddo >= format_date(mom.death):
                     print("Error US09: Child", child.id, "was born after mother's death")
+                    return child.id
                 if format_date(dad.death).days - 273 >= kiddo:
                     print("Error US09: Child", child.id, "was born more than 9 months before father's death")
+                    return child.id
 
 def marriage_after_14(family=None):
     '''returns an error if an individual was married before they were 14
