@@ -54,7 +54,7 @@ def birth_before_parents_death(family=None):
                 if kiddo >= format_date(mom.death):
                     print("Error US09: Child", child.id, "was born after mother's death")
                     return child.id
-                if format_date(dad.death).days - 273 >= kiddo:
+                if format_date(dad.death) - relativedelta(days=273) >= kiddo:
                     print("Error US09: Child", child.id, "was born more than 9 months before father's death")
                     return child.id
 
