@@ -92,7 +92,7 @@ def divorce_after_death(individual=None, family=None):
 
         # check if divorce date is greater than death date, print the error, return the individual
         if divorce_date > individuals_death:
-            print("Error US06: ", individual[0], " got divorced after death")
+            print("Error US06: ", individual.id, " got divorced after death")
             return individual.id
 
     return None
@@ -138,7 +138,7 @@ def user_stories(conn):
 
 
         #loop through each individual in the family
-        for indiv in list(family[3:4]) + fam_obj.get_children_ids():
+        for indiv in list(family[3:5]) + fam_obj.get_children_ids():
             #print("family children: ")
             #print(fam_obj.get_children())
             if indiv != None:
