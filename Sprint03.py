@@ -12,6 +12,33 @@ def format_date(date_str):
     return datetime.datetime.strptime(date_str, '%Y-%m-%d').date()
 
 
+def list_deceased(individual = None):
+
+    '''List all people in a GEDCOM file who are dead'''
+
+    if individual is None or individual.alive is None:
+        return None
+
+    if individual.alive == "F":
+        print("US29: Individual " + individual.id + " is deceased.")
+        return individual.id
+
+
+def list_recent_deceased(individual = None):
+    '''List all people in a GEDCOM file who died in the last 30 days'''
+
+    if individual is None or individual.death is None:
+        return None
+
+    today = date.today()
+    individual_death = format_date(individual.death)
+
+
+    if (today - individual_death).days <= 30:
+
+        print("US 36: Individual " + individual.id + " died in the last month.")
+        return individual.id
+
 
 def list_recent_births(individual = None):
     #User Story 35
@@ -26,7 +53,7 @@ def list_recent_births(individual = None):
 
     if (today - individual_birthday).days <= 30:
 
-        print("Individual " + individual.id + " is less than one month old.")
+        print("US 35: Individual " + individual.id + " is less than one month old.")
         return individual.id
 
 def list_upcoming_anniversaries(family = None):
@@ -38,13 +65,33 @@ def list_upcoming_anniversaries(family = None):
     today = date.today()
     parsed = format_date(family.marriage).replace(year=today.year)
 
-
-    if (parsed - timedelta(days=30)) <= today:
-        print("Anniversary Date of " + family.id + " is in the next month")
+# today < parsed <= 30 days from now
+    if parsed >= today and parsed <= (today + timedelta(days=30)):
+        print("US39: Anniversary Date of " + family.id + " is in the next month")
         return family.id
 
+def list_upcoming_birthdays(individual = None):
+    '''User story 38: List people whose birthday is within a month'''
+    if individual is None or individual.birthday is None:
+        return None
 
 
+    today = date.today()
+    parsed = format_date(individual.birthday).replace(year=today.year)
+
+    if parsed >= today and parsed <= (today + timedelta(days=30)):
+        print("US38:  Individual " + individual.id + "'s birthday is in the next month")
+        return individual.id
+
+
+def fewer_than_15_siblings(family = None):
+    '''US15 cant be more than 15 children per family'''
+    if family is None or not family.children:
+        return None
+
+    if(len(family.children) > 15):
+        print("Error US15: More than 15 children in family " + family.id)
+        return family.id
 
 def user_stories(conn):
 
@@ -60,6 +107,7 @@ def user_stories(conn):
         #loop through each family, checking the divorce/marriage dates
         fam_obj = classes.Family(family[0], family[1], family[2],family[3],family[4],family[5],)
         list_upcoming_anniversaries(fam_obj)
+        fewer_than_15_siblings(fam_obj)
         #New loop for each person in the file
         for indiv in list(family[3:5]) + fam_obj.get_children_ids():
 
@@ -74,3 +122,6 @@ def user_stories(conn):
 
                 #now we have the individual
                 list_recent_births(indiv_obj)
+                list_deceased(indiv_obj)
+                list_recent_deceased(indiv_obj)
+                list_upcoming_birthdays(indiv_obj)
