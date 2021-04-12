@@ -34,8 +34,6 @@ class TestUserStory09(unittest.TestCase):
 
 class TestUserStory10(unittest.TestCase):
     '''make sure nobody gets married before the age of 14'''
-
-
     def test01(self):
         '''husband under 14'''
         '''Expect to return the husband's ID'''

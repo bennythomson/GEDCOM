@@ -24,7 +24,6 @@ def birth_before_parents_marriage(family=None):
             return None
         if(family.children != None):
             marriage_date = format_date(family.marriage)
-            marriage_date = format_date(family.marriage)
 
             #This gets the list of children from the family, and converts them into an Individual object
             children = family.get_children()
@@ -103,6 +102,8 @@ def no_bigamy(family1 = None, family2  = None):
 
 def parents_not_too_old(family = None):
     if(family is None):
+        return None
+    if family.wife is None or family.husband is None:
         return None
     #print(family.wife)
     wife = family.wife

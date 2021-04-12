@@ -59,7 +59,7 @@ def list_recent_births(individual = None):
 def list_upcoming_anniversaries(family = None):
     '''User story 39: List all living couples in a GEDCOM file whose marriage anniversaries occur in the unext 30 days'''
     if family is None or family.marriage is None:
-        return none
+        return None
 
 
     today = date.today()
