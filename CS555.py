@@ -8,6 +8,7 @@ from prettytable import from_db_cursor
 import Sprint01
 import Sprint02
 import Sprint03
+import Sprint04
 
 print('Please specify GEDCOM file: ')
 
@@ -258,6 +259,7 @@ def validate_output(conn):
     Sprint01.user_stories(conn)
     Sprint02.user_stories(conn)
     Sprint03.user_stories(conn)
+    Sprint04.user_stories(conn)
 
 
 

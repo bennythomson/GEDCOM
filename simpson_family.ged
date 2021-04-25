@@ -81,13 +81,13 @@
 2 DATE 1 APR 1779
 1 FAMC @F1@
 0 @I8@ INDI
-1 NAME Lisa /Simpson/
-2 GIVN Lisa
+1 NAME Bart /Simpson/
+2 GIVN Bart
 2 SURN Simpson
 2 _MARNM Simpson
 1 SEX F
 1 BIRT
-2 DATE 9 MAY 1984
+2 DATE 1 APR 1779
 1 FAMC @F1@
 0 @I9@ INDI
 1 NAME Maggie /Simpson/
