@@ -68,10 +68,14 @@ def unique_family(family = None):
 
 def unique_names_in_family(family = None):
     '''US 25 - No more than one child with the same name and birth date should appear in a family'''
-    if family is None:
+    if family is None or family.children is None:
         return None
 
+
     family_children = family.children
+
+    if not isinstance(family_children[0], classes.Individual):
+        family_children = family.get_children()
 
     for child in family_children:
 
