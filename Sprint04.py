@@ -52,7 +52,7 @@ def unique_name_and_birthday(individual = None):
 
 def unique_family(family = None):
     '''makes sure no duplicate families exist'''
-    if family is None:
+    if family is None or family.husband is None or family.wife is None:
         return None
 
     list_of_families.append(family)
@@ -62,7 +62,6 @@ def unique_family(family = None):
                 #error - duplicate info
                 print("Error US 24: " + fam.id + " and " + family.id + " have the same name and birthday")
                 return family.id
-
 
     return None
 
@@ -104,6 +103,21 @@ def multiple_births_in_family(family = None):
 
     return None
 
+
+def correct_gender_role(family = None):
+    '''US 21 - Husband in family should be male and wife in family should be female'''
+    if family is None or family.husband is None or family.wife is None:
+        return None
+    husband = family.husband
+    wife = family.wife
+
+    if(husband.sex != "M "):
+        print("Error US21: Husband " + husband.id + " has an incorrect gender role of " + husband.sex)
+    elif(wife.sex != "F "):
+        print("Error US21: Wife " + wife.id + " has an incorrect gender role of " + wife.sex)
+
+    return None
+
 def user_stories(conn):
 
     '''executes all of the user stories contained in this module'''
@@ -117,9 +131,10 @@ def user_stories(conn):
     for family in families:
         #loop through each family, checking the divorce/marriage dates
         fam_obj = classes.Family(family[0], family[1], family[2],family[3],family[4],family[5],)
-        #unique_family(fam_obj)
-        #unique_names_in_family(fam_obj)
+        unique_family(fam_obj)
+        unique_names_in_family(fam_obj)
         multiple_births_in_family(fam_obj)
+        correct_gender_role(fam_obj)
         #New loop for each person in the file
         for indiv in list(family[3:5]) + fam_obj.get_children_ids():
 
@@ -131,4 +146,4 @@ def user_stories(conn):
                 indiv_result = new_cur.fetchall()
             #    print(indiv_result)
                 indiv_obj = classes.Individual(indiv_result[0][0], indiv_result[0][1], indiv_result[0][2], indiv_result[0][3], indiv_result[0][4], indiv_result[0][5], indiv_result[0][6], indiv_result[0][7])
-                #unique_name_and_birthday(indiv_obj)
+                unique_name_and_birthday(indiv_obj)
