@@ -51,7 +51,7 @@ def unique_name_and_birthday(individual = None):
     return None
 
 def unique_family(family = None):
-    '''makes sure no duplicate families exist'''
+    '''US24: makes sure no duplicate families exist'''
     if family is None or family.husband is None or family.wife is None:
         return None
 
@@ -60,7 +60,7 @@ def unique_family(family = None):
         if fam.id != family.id:
             if fam.husband.name == family.husband.name and fam.wife.name == family.wife.name and fam.marriage == family.marriage:
                 #error - duplicate info
-                print("Error US 24: " + fam.id + " and " + family.id + " have the same name and birthday")
+                print("Error US 24: " + fam.id + " and " + family.id + " have the same name and anniversary")
                 return family.id
 
     return None
@@ -98,6 +98,7 @@ def multiple_births_in_family(family = None):
     counts = Counter(list_of_child_births)
     if any(c >= 5 for c in counts.values()):
         print("Error US14: Family " + family.id + " has had at least 5 children with the same birthday")
+        return family.id
 
     list_of_child_births.clear()
 
@@ -113,8 +114,10 @@ def correct_gender_role(family = None):
 
     if(husband.sex != "M "):
         print("Error US21: Husband " + husband.id + " has an incorrect gender role of " + husband.sex)
+        return family.id
     elif(wife.sex != "F "):
         print("Error US21: Wife " + wife.id + " has an incorrect gender role of " + wife.sex)
+        return family.id
 
     return None
 
