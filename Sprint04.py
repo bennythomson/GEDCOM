@@ -4,12 +4,15 @@ import sqlite3
 from datetime import date
 from datetime import timedelta
 from dateutil.relativedelta import relativedelta
+from collections import Counter
 
 list_of_ids = []
 
 list_of_individuals = []
 
 list_of_families = []
+
+list_of_child_births = []
 
 def format_date(date_str):
     #takes in a string representing a date in Y-m-d format and returns a datetime object
@@ -45,9 +48,6 @@ def unique_name_and_birthday(individual = None):
                 #error - duplicate info
                 print("Error US 23: " + individual_checked.id + " and " + individual.id + " have the same name and birthday")
                 return individual.id
-
-
-
     return None
 
 def unique_family(family = None):
@@ -70,8 +70,6 @@ def unique_names_in_family(family = None):
     '''US 25 - No more than one child with the same name and birth date should appear in a family'''
     if family is None or family.children is None:
         return None
-
-
     family_children = family.children
 
     if not isinstance(family_children[0], classes.Individual):
@@ -86,6 +84,25 @@ def unique_names_in_family(family = None):
                 return family.id
     return None
 
+def multiple_births_in_family(family = None):
+    '''US 14 - No more than five siblings should be born at the same time'''
+    if family is None or family.children is None:
+        return None
+    family_children = family.children
+
+    if not isinstance(family_children[0], classes.Individual):
+        family_children = family.get_children()
+
+    for child in family_children:
+        list_of_child_births.append(child.birthday)
+
+    counts = Counter(list_of_child_births)
+    if any(c >= 5 for c in counts.values()):
+        print("Error US14: Family " + family.id + " has had at least 5 children with the same birthday")
+
+    list_of_child_births.clear()
+
+    return None
 
 def user_stories(conn):
 
@@ -100,8 +117,9 @@ def user_stories(conn):
     for family in families:
         #loop through each family, checking the divorce/marriage dates
         fam_obj = classes.Family(family[0], family[1], family[2],family[3],family[4],family[5],)
-        unique_family(fam_obj)
-        unique_names_in_family(fam_obj)
+        #unique_family(fam_obj)
+        #unique_names_in_family(fam_obj)
+        multiple_births_in_family(fam_obj)
         #New loop for each person in the file
         for indiv in list(family[3:5]) + fam_obj.get_children_ids():
 
@@ -113,4 +131,4 @@ def user_stories(conn):
                 indiv_result = new_cur.fetchall()
             #    print(indiv_result)
                 indiv_obj = classes.Individual(indiv_result[0][0], indiv_result[0][1], indiv_result[0][2], indiv_result[0][3], indiv_result[0][4], indiv_result[0][5], indiv_result[0][6], indiv_result[0][7])
-                unique_name_and_birthday(indiv_obj)
+                #unique_name_and_birthday(indiv_obj)
